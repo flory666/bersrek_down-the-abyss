@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class gutadinberbec : MonoBehaviour
@@ -12,23 +13,16 @@ public class gutadinberbec : MonoBehaviour
     private CharacterController controls;
     public Controls Inputs;
     private Animator anim;
-    [SerializeField]
     private bool movable = true;
-    [SerializeField]
     private bool canBlock = true;
-    [SerializeField]
     private bool rememberAttack = false;
-    [SerializeField]
-    private int AttackCount;
-    [SerializeField]
-    private bool stepping = false;
+    private int AttackCount=0;
     private float attackDistance = 3f;
     private string animationName = "";
     private string currentAnimation = "";
     private dragon_slayer dragon_slayer;
     private Vector3 characterDirection;
     private int CannonAmmo = 1;
-    [SerializeField]
     private MovementState movementState = 0;
     enum MovementState
     {
@@ -98,7 +92,7 @@ public class gutadinberbec : MonoBehaviour
         if (move != Vector3.zero && movable)
         {
             movementState = MovementState.running;
-            controls.Move(move * speed * Time.fixedDeltaTime);
+            controls.Move(move * speed * Time.deltaTime);
             anim.Play("run");
             AttackCount = 0;
         }
@@ -116,21 +110,21 @@ public class gutadinberbec : MonoBehaviour
             case "attack1":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
+                controls.Move(actionMove * speed * 0.4f * Time.deltaTime);
                 break;
             case "attack2":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
+                controls.Move(actionMove * speed * 0.4f * Time.deltaTime);
                 break;
             case "attack3":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
+                controls.Move(actionMove * speed * 0.4f * Time.deltaTime);
                 break;
             case "dodge":
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 1f * Time.fixedDeltaTime);
+                controls.Move(actionMove * speed * 1.5f * Time.deltaTime);
                 break;
             case "armcannon":
                 // No movement during arm cannon animation
@@ -209,7 +203,7 @@ public class gutadinberbec : MonoBehaviour
             if (move != Vector3.zero && movable)
             {
                 movementState = MovementState.running;
-                controls.Move(move * speed * Time.fixedDeltaTime);
+                controls.Move(move * speed * Time.deltaTime);
                 anim.Play("run");
                 AttackCount = 0;
             }
@@ -218,7 +212,13 @@ public class gutadinberbec : MonoBehaviour
     private void block_performed()
     {
         if (!canBlock) return;
-        UnityEngine.Debug.Log("Blocking");
+        moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
+        move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
+        if (characterDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(characterDirection, Vector3.up);
+        }
         movementState = MovementState.blocking;
         AttackCount = 0;
         movable = false;
@@ -248,8 +248,7 @@ public class gutadinberbec : MonoBehaviour
         characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
         if (characterDirection != Vector3.zero)
         {
-            Quaternion toRotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.LookRotation(characterDirection, Vector3.up);
         }
         movementState = MovementState.dodging;
         movable = false;
@@ -272,7 +271,7 @@ public class gutadinberbec : MonoBehaviour
         if (characterDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.deltaTime);
         }
     }
     private void OnEnable()

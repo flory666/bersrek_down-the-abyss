@@ -21,7 +21,8 @@ public class dragon_slayer : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Hit();
+            other.GetComponent<enemyAI>().TakeDamage(10);
+            UnityEngine.Debug.Log("Enemy hit by sword!");
         }
     }
     private void Hit()
