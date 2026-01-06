@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime;
 using UnityEngine;
 
@@ -97,7 +98,7 @@ public class gutadinberbec : MonoBehaviour
         if (move != Vector3.zero && movable)
         {
             movementState = MovementState.running;
-            controls.Move(move * speed * Time.deltaTime);
+            controls.Move(move * speed * Time.fixedDeltaTime);
             anim.Play("run");
             AttackCount = 0;
         }
@@ -107,7 +108,7 @@ public class gutadinberbec : MonoBehaviour
         }
     }
     private void actionMovement()
-    {   
+    {
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
         move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
         switch (currentAnimation)
@@ -115,21 +116,21 @@ public class gutadinberbec : MonoBehaviour
             case "attack1":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.5f * Time.deltaTime);
+                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
                 break;
             case "attack2":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.5f * Time.deltaTime);
+                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
                 break;
             case "attack3":
                 CharacterRotaion();
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 0.5f * Time.deltaTime);
+                controls.Move(actionMove * speed * 0.2f * Time.fixedDeltaTime);
                 break;
             case "dodge":
                 actionMove = transform.TransformDirection(Vector3.forward);
-                controls.Move(actionMove * speed * 1f * Time.deltaTime);
+                controls.Move(actionMove * speed * 1f * Time.fixedDeltaTime);
                 break;
             case "armcannon":
                 // No movement during arm cannon animation
@@ -151,7 +152,6 @@ public class gutadinberbec : MonoBehaviour
     }
     private void attack()
     {
-        OnDisable();
         if (movementState == MovementState.attacking)
         {
             rememberAttack = true;
@@ -209,7 +209,7 @@ public class gutadinberbec : MonoBehaviour
             if (move != Vector3.zero && movable)
             {
                 movementState = MovementState.running;
-                controls.Move(move * speed * Time.deltaTime);
+                controls.Move(move * speed * Time.fixedDeltaTime);
                 anim.Play("run");
                 AttackCount = 0;
             }
@@ -218,6 +218,7 @@ public class gutadinberbec : MonoBehaviour
     private void block_performed()
     {
         if (!canBlock) return;
+        UnityEngine.Debug.Log("Blocking");
         movementState = MovementState.blocking;
         AttackCount = 0;
         movable = false;
@@ -242,6 +243,14 @@ public class gutadinberbec : MonoBehaviour
     private void dodge()
     {
         if (!movable) return;
+        moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
+        move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
+        if (characterDirection != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(characterDirection, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
+        }
         movementState = MovementState.dodging;
         movable = false;
         canBlock = false;
@@ -263,7 +272,7 @@ public class gutadinberbec : MonoBehaviour
         if (characterDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.fixedDeltaTime);
         }
     }
     private void OnEnable()

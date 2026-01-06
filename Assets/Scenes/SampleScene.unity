@@ -209,6 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  movable: 1
+  canBlock: 1
+  rememberAttack: 0
+  AttackCount: 0
+  stepping: 0
+  movementState: 0
 --- !u!143 &351574217
 CharacterController:
   m_ObjectHideFlags: 0
@@ -739,7 +745,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
@@ -833,6 +839,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1062372453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: de327198dd46fe847b28c248aa64ebfa, type: 3}
+  m_PrefabInstance: {fileID: 1614119803}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &1062372455
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062372453}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 5.47
+  m_Radius: 1.48
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 1.07, z: -0.22}
 --- !u!1001 &1275219499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1677,10 +1713,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: monster 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: de327198dd46fe847b28c248aa64ebfa, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de327198dd46fe847b28c248aa64ebfa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1062372455}
   m_SourcePrefab: {fileID: 100100000, guid: de327198dd46fe847b28c248aa64ebfa, type: 3}
 --- !u!4 &1628708797 stripped
 Transform:

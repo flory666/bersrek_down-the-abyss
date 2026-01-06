@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class dragon_slayer : MonoBehaviour
@@ -15,6 +16,13 @@ public class dragon_slayer : MonoBehaviour
     public void DisableSwordCollider()
     {
         swordCollider.enabled = false;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Hit();
+        }
     }
     private void Hit()
     {
