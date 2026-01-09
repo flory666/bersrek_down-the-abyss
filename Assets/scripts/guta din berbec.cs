@@ -1,12 +1,10 @@
-using System.Diagnostics;
-using System.Runtime;
-using System.Runtime.Serialization;
 using UnityEngine;
 
-public class gutadinberbec : MonoBehaviour
+public class gutadinberbec : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private float speed = 10f;
+    private int health = 50;
     private Vector3 move;
     private Vector3 actionMove;
     private Vector2 moveInput;
@@ -16,13 +14,16 @@ public class gutadinberbec : MonoBehaviour
     private bool movable = true;
     private bool canBlock = true;
     private bool rememberAttack = false;
-    private int AttackCount=0;
-    private float attackDistance = 3f;
-    private string animationName = "";
+    private int AttackCount = 0;
+    private string animationName = "idle";
     private string currentAnimation = "";
     private dragon_slayer dragon_slayer;
     private Vector3 characterDirection;
     private int CannonAmmo = 1;
+    public float gravity = -9.81f;
+    public float groundedForce = -2f; // îl ține lipit de sol
+    private Vector3 velocity;
+    private bool canTakeDamage = true;
     private MovementState movementState = 0;
     enum MovementState
     {
@@ -32,7 +33,9 @@ public class gutadinberbec : MonoBehaviour
         attackingIdle,
         blocking,
         dodging,
-        armcannon
+        armcannon,
+        staggered,
+        death
     }
 
     private void Awake()
@@ -40,7 +43,7 @@ public class gutadinberbec : MonoBehaviour
         Inputs = new Controls();
         anim = GetComponent<Animator>();
         controls = GetComponent<CharacterController>();
-        dragon_slayer = FindObjectOfType<dragon_slayer>();
+        dragon_slayer = FindAnyObjectByType<dragon_slayer>();
         Inputs.guts.attack.performed += ctx => attack();
         Inputs.guts.block.performed += ctx => block_performed();
         Inputs.guts.block.canceled += ctx => block_canceled();
@@ -50,6 +53,17 @@ public class gutadinberbec : MonoBehaviour
 
     private void Update()
     {
+        if (controls.isGrounded)
+        {
+            if (velocity.y < 0)
+                velocity.y = groundedForce;
+        }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
+        controls.Move(velocity * Time.deltaTime);
         switch (movementState)
         {
             case MovementState.idle:
@@ -76,14 +90,13 @@ public class gutadinberbec : MonoBehaviour
             case MovementState.armcannon:
                 // Arm cannon logic if needed
                 break;
+            case MovementState.staggered:
+                // Staggered logic if needed
+                break;
+            case MovementState.death:
+                // Death logic if needed
+                break;
         }
-        // if (movable)
-        // {
-        //     movementInput();
-        //     CharacterRotaion();
-        // }
-        // if (stepping)
-        // actionMovement();
     }
     private void movementInput()
     {
@@ -212,6 +225,7 @@ public class gutadinberbec : MonoBehaviour
     private void block_performed()
     {
         if (!canBlock) return;
+        canTakeDamage = false;
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
         move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
         characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
@@ -227,6 +241,7 @@ public class gutadinberbec : MonoBehaviour
     private void block_canceled()
     {
         if (!canBlock) return;
+        canTakeDamage = true;
         movementState = MovementState.idle;
         movable = true;
         animation_player("idle");
@@ -242,7 +257,8 @@ public class gutadinberbec : MonoBehaviour
     }
     private void dodge()
     {
-        if (!movable) return;
+        if (movementState == MovementState.dodging || movementState == MovementState.attacking || movementState == MovementState.blocking) return;
+        canTakeDamage = false;
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
         move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
         characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
@@ -263,6 +279,7 @@ public class gutadinberbec : MonoBehaviour
         canBlock = true;
         animation_player("idle");
         OnEnable();
+        canTakeDamage = true;
         movementState = MovementState.idle;
     }
     private void CharacterRotaion()
@@ -274,6 +291,48 @@ public class gutadinberbec : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.deltaTime);
         }
     }
+    public void TakeDamage(int damage)
+    {
+        if (!canTakeDamage) return;
+        health -= damage;
+        if (health <= 0)
+        {
+            Death();
+        }
+        else
+        {
+            Stagger();
+        }
+        movementState = MovementState.staggered;
+    }
+    private void Stagger()
+    {
+        anim.Play("stagger");
+        movable = false;
+        canBlock = false;
+        OnDisable();
+        canTakeDamage = false;
+    }
+    private void StaggerEnd()
+    {
+        movable = true;
+        canBlock = true;
+        animation_player("idle");
+        OnEnable();
+        canTakeDamage = true;
+        movementState = MovementState.idle;
+    }
+    private void Death()
+    {
+        canTakeDamage = false;
+        movementState = MovementState.death;
+        anim.Play("death");
+        movable = false;
+        canBlock = false;
+        OnDisable();
+        GameEvents.OnPlayerDied?.Invoke();
+    }
+
     private void OnEnable()
     {
         Inputs.Enable();

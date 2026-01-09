@@ -19,14 +19,13 @@ public class dragon_slayer : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            other.GetComponent<enemyAI>().TakeDamage(10);
-            UnityEngine.Debug.Log("Enemy hit by sword!");
+            IDamageable damageable = other.GetComponentInParent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(10);
+            }
         }
-    }
-    private void Hit()
-    {
-        Debug.Log("Hit detected!");
     }
 }
