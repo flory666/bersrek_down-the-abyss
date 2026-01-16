@@ -48,6 +48,7 @@
   <Project Path="Unity.Formats.Fbx.Editor.csproj" />
   <Project Path="UnityEditor.UI.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
+  <Project Path="Unity.2D.Sprite.Editor.csproj" />
   <Project Path="Unity.Recorder.csproj" />
   <Project Path="Unity.Formats.Alembic.Editor.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />

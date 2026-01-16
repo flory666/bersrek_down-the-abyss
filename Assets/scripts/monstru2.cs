@@ -8,7 +8,6 @@ public class monstru2 : MonoBehaviour
     private Animator anim;
     private Vector3 dir;
     private float distance;
-    private bool isPlayerDead = false;
 
     [Header("Movement")]
     [SerializeField]

@@ -145,6 +145,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6740663-c70c-444b-8f19-c51674b22752"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -213,6 +222,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92d2e3aa-cac5-4097-b5f5-2e50bad08f08"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_guts_block = m_guts.FindAction("block", throwIfNotFound: true);
         m_guts_armcannon = m_guts.FindAction("armcannon", throwIfNotFound: true);
         m_guts_dodge = m_guts.FindAction("dodge", throwIfNotFound: true);
+        m_guts_pause = m_guts.FindAction("pause", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -313,6 +334,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_guts_block;
     private readonly InputAction m_guts_armcannon;
     private readonly InputAction m_guts_dodge;
+    private readonly InputAction m_guts_pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "guts".
     /// </summary>
@@ -348,6 +370,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "guts/dodge".
         /// </summary>
         public InputAction @dodge => m_Wrapper.m_guts_dodge;
+        /// <summary>
+        /// Provides access to the underlying input action "guts/pause".
+        /// </summary>
+        public InputAction @pause => m_Wrapper.m_guts_pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -392,6 +418,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @dodge.started += instance.OnDodge;
             @dodge.performed += instance.OnDodge;
             @dodge.canceled += instance.OnDodge;
+            @pause.started += instance.OnPause;
+            @pause.performed += instance.OnPause;
+            @pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -421,6 +450,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @dodge.started -= instance.OnDodge;
             @dodge.performed -= instance.OnDodge;
             @dodge.canceled -= instance.OnDodge;
+            @pause.started -= instance.OnPause;
+            @pause.performed -= instance.OnPause;
+            @pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -503,5 +535,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDodge(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }
