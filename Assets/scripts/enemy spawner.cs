@@ -1,11 +1,13 @@
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class enemyspawner : MonoBehaviour
 {
     public Transform player;
-    public Transform[] spawnPoints;
+    public GameObject[] spawnPoints;
     public GameObject enemyPrefab1;
     public GameObject enemyPrefab2;
+    public GameObject CheckSpawn;
     private bool isPlayerDead = false;
     [SerializeField]
     private int maxEnemies = 15;
@@ -14,6 +16,8 @@ public class enemyspawner : MonoBehaviour
     private int spawnedEnemies = 0;
     public float spawnCooldown = 3f;
     private float spawnTimer = 3f;
+    private Transform farthest = null;
+    private bool check = false;
     private int[][] enemyAlive = new int[1][];
 
     private void FixedUpdate()
@@ -25,43 +29,46 @@ public class enemyspawner : MonoBehaviour
         if (spawnTimer >= spawnCooldown && currentEnemies < maxAliveEnemies && spawnedEnemies < maxEnemies)
         {
             SpawnEnemy();
-            spawnTimer = 0f;
-
-            Debug.Log("Spawned Enemy. Current Enemies: "
-                + currentEnemies + ", Spawned Enemies: " + spawnedEnemies);
         }
+    }
+    private void SetTimer(float time)
+    {
+        spawnTimer = time;
     }
     private void SpawnEnemy()
     {
         int enemyRnd = Random.Range(1, 4);
-        if (enemyRnd == 1)
+        GetFarthestSpawnPoint();
+        if (check)
         {
-            Instantiate(enemyPrefab2, GetFarthestSpawnPoint().position, Quaternion.identity);
+            if (enemyRnd == 1)
+            {
+                Instantiate(enemyPrefab2, farthest.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(enemyPrefab1, farthest.position, Quaternion.identity);
+            }
+            currentEnemies++;
+            spawnedEnemies++;
+            SetTimer(0f);
         }
-        else
-        {
-            Instantiate(enemyPrefab1, GetFarthestSpawnPoint().position, Quaternion.identity);
-        }
-        currentEnemies++;
-        spawnedEnemies++;
     }
-    Transform GetFarthestSpawnPoint()
+    private void GetFarthestSpawnPoint()
     {
-        Transform farthest = null;
         float maxDistance = 0f;
 
-        foreach (Transform spawn in spawnPoints)
+        foreach (GameObject spawn in spawnPoints)
         {
-            float dist = Vector3.Distance(player.position, spawn.position);
-
+            float dist = Vector3.Distance(player.position, spawn.transform.position);
             if (dist > maxDistance)
             {
+                //CheckSpawn spawnCheck = spawn.GetComponent<CheckSpawn>();
+                //check = spawn.checkSpawn.verifySpawn();
                 maxDistance = dist;
-                farthest = spawn;
+                farthest = spawn.transform;
             }
         }
-
-        return farthest;
     }
     private void OnEnable()
     {

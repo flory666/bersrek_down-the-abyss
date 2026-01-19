@@ -115,11 +115,6 @@ public class monstru2 : MonoBehaviour
         controller.Move(transform.forward * moveSpeed * Time.deltaTime);
         anim.Play("monster2_attack");
     }
-    public void Staggered()
-    {
-        state = States.staggered;
-        anim.Play("monster2_stagger");
-    }
     public void TakeDamage(int damage)
     {
         attackbox.SetActive(false);
@@ -133,6 +128,13 @@ public class monstru2 : MonoBehaviour
             Staggered();
         }
     }
+    public void Staggered()
+    {
+        state = States.staggered;
+        attackbox.SetActive(false);
+        anim.Play("monster2_stagger");
+    }
+    
     void staggerEnd()
     {
         state = States.targeting;

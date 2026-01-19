@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8007700099515180955}
   - component: {fileID: 6523851542272651090}
+  - component: {fileID: 8009709453231757157}
   m_Layer: 0
   m_Name: gameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8007700099515180955
 Transform:
   m_ObjectHideFlags: 0
@@ -53,3 +54,18 @@ MonoBehaviour:
   enemyPrefab2: {fileID: 3778338213591209573, guid: c4d87698b19636f4cbeb22e7ee232dbb, type: 3}
   maxEnemies: 15
   spawnCooldown: 3
+--- !u!114 &8009709453231757157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289762458985958614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a1a93d4a19f7c44b4171a8e52941d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenuUI: {fileID: 0}
+  playButton: {fileID: 0}
+  quitButton: {fileID: 0}

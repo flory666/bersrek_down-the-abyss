@@ -10,6 +10,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     private Vector2 moveInput;
     private CharacterController controls;
     public Controls Inputs;
+    public Transform cam;
     private Animator anim;
     private bool movable = true;
     private bool canBlock = true;
@@ -101,7 +102,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     private void movementInput()
     {
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
-        move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        move =Quaternion.Euler(0f, cam.eulerAngles.y, 0f) * new Vector3(moveInput.x, 0, moveInput.y).normalized;
         if (move != Vector3.zero && movable)
         {
             movementState = MovementState.running;
@@ -227,12 +228,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
         if (!canBlock) return;
         canTakeDamage = false;
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
-        move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-        characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
-        if (characterDirection != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-        }
+        CharacterRotaion();
         movementState = MovementState.blocking;
         AttackCount = 0;
         movable = false;
@@ -259,13 +255,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     {
         if (movementState == MovementState.dodging || movementState == MovementState.attacking || movementState == MovementState.blocking) return;
         canTakeDamage = false;
-        moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
-        move = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-        characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
-        if (characterDirection != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-        }
+        CharacterRotaion();
         movementState = MovementState.dodging;
         movable = false;
         canBlock = false;
@@ -284,11 +274,11 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     }
     private void CharacterRotaion()
     {
-        characterDirection = Vector3.forward * moveInput.y + Vector3.right * moveInput.x;
+        characterDirection =Quaternion.Euler(0f, cam.eulerAngles.y, 0f)* (Vector3.forward * moveInput.y + Vector3.right * moveInput.x);
         if (characterDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(characterDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, Mathf.Infinity);
         }
     }
     public void TakeDamage(int damage)

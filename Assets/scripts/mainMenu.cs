@@ -8,7 +8,7 @@ public class mainMenu : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
-    [SerializeField] public Button ReturnButton;
+    [SerializeField] private Button ReturnButton;
     [SerializeField] public Slider music;
     [SerializeField] public Slider sfx;
     [SerializeField] private Animator animator;
@@ -37,6 +37,7 @@ public class mainMenu : MonoBehaviour
     }
     public void OnReturnButtonClicked()
     {
+        Debug.Log("return button pressed");
         mainMenu_panel.SetActive(true);
         settingMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(playButton.gameObject);
