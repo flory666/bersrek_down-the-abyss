@@ -1,4 +1,3 @@
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class enemyspawner : MonoBehaviour
@@ -7,7 +6,6 @@ public class enemyspawner : MonoBehaviour
     public GameObject[] spawnPoints;
     public GameObject enemyPrefab1;
     public GameObject enemyPrefab2;
-    public GameObject CheckSpawn;
     private bool isPlayerDead = false;
     [SerializeField]
     private int maxEnemies = 15;
@@ -37,10 +35,10 @@ public class enemyspawner : MonoBehaviour
     }
     private void SpawnEnemy()
     {
-        int enemyRnd = Random.Range(1, 4);
         GetFarthestSpawnPoint();
         if (check)
         {
+            int enemyRnd = Random.Range(1, 4);
             if (enemyRnd == 1)
             {
                 Instantiate(enemyPrefab2, farthest.position, Quaternion.identity);
@@ -63,8 +61,8 @@ public class enemyspawner : MonoBehaviour
             float dist = Vector3.Distance(player.position, spawn.transform.position);
             if (dist > maxDistance)
             {
-                //CheckSpawn spawnCheck = spawn.GetComponent<CheckSpawn>();
-                //check = spawn.checkSpawn.verifySpawn();
+                checkSpawn spawnCheck = spawn.GetComponent<checkSpawn>();
+                check = spawnCheck.verifySpawn();
                 maxDistance = dist;
                 farthest = spawn.transform;
             }

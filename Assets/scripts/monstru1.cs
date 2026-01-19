@@ -165,9 +165,11 @@ public class monstru1 : MonoBehaviour, IDamageable
         state = States.death;
         rightHand.SetActive(false);
         leftHand.SetActive(false);
+        controller.enabled=false;
         anim.Play("monster1_death");
         GameEvents.OnEnemyKilled?.Invoke();
         Destroy(gameObject, 10f);
+        this.enabled = false;
     }
     private void OnEnable()
     {

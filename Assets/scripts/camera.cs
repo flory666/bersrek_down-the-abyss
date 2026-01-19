@@ -15,23 +15,24 @@ public class camera : MonoBehaviour
     public GameObject player;
     private Vector3 pos;
 
-    void Awake()
+    private void Awake()
     {
         Inputs = new Controls();
-    }
-
-    void OnEnable()
-    {
-        Inputs.guts.Enable();
         pos.y=24f;
     }
 
-    void OnDisable()
+    public void OnEnable()
+    {
+        Inputs.guts.Enable();
+        
+    }
+
+    public void OnDisable()
     {
         Inputs.guts.Disable();
     }
 
-    void Update()
+    private void Update()
     {
         pos.x = player.transform.position.x;
         pos.z = player.transform.position.z;

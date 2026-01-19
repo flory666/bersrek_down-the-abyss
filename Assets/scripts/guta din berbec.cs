@@ -298,6 +298,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     private void Stagger()
     {
         anim.Play("stagger");
+        dragon_slayer.DisableSwordCollider();
         movable = false;
         canBlock = false;
         OnDisable();
@@ -323,12 +324,12 @@ public class gutadinberbec : MonoBehaviour, IDamageable
         GameEvents.OnPlayerDied?.Invoke();
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         Inputs.Enable();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         Inputs.Disable();
     }

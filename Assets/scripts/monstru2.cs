@@ -146,9 +146,11 @@ public class monstru2 : MonoBehaviour
         state = States.death;
         hitBox.SetActive(false);
         attackbox.SetActive(false);
+        controller.enabled=false;
         anim.Play("monster2_death");
         GameEvents.OnEnemyKilled?.Invoke();
         Destroy(gameObject, 10f);
+        this.enabled = false;
     }
     private void OnEnable()
     {

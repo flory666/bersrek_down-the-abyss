@@ -214,6 +214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5289762458985958614, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: player
       value: 
@@ -221,15 +225,15 @@ PrefabInstance:
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
-      objectReference: {fileID: 529735501}
+      objectReference: {fileID: 529735500}
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: 'spawnPoints.Array.data[1]'
       value: 
-      objectReference: {fileID: 858165635}
+      objectReference: {fileID: 858165634}
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: 'spawnPoints.Array.data[2]'
       value: 
-      objectReference: {fileID: 445182358}
+      objectReference: {fileID: 445182357}
     - target: {fileID: 8007700099515180955, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.91653
@@ -270,6 +274,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8009709453231757157, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      propertyPath: Camera
+      value: 
+      objectReference: {fileID: 873167235}
+    - target: {fileID: 8009709453231757157, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      propertyPath: Gutsty
+      value: 
+      objectReference: {fileID: 529019827}
     - target: {fileID: 8009709453231757157, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: playButton
       value: 
@@ -1702,7 +1714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1836039019
 MonoBehaviour:
   m_ObjectHideFlags: 0

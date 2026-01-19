@@ -1,31 +1,39 @@
 using UnityEngine;
-
 public class checkSpawn : MonoBehaviour
 {
     private BoxCollider checker;
-    private bool isSomething = false;
     private void Start()
-    {DisableCheckerCollider();}
+    {
+        checker = GetComponent<BoxCollider>();
+        DisableCheckerCollider();
+    }
     public bool verifySpawn()
     {
-        EnableCheckerCollider();
-        Invoke(nameof(DisableCheckerCollider),0.2f);
-        return isSomething;
+        Collider[] hits = Physics.OverlapBox(
+            transform.position,
+            transform.localScale / 2,
+            transform.rotation
+        );
+
+        foreach (Collider hit in hits)
+        {   
+            if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
+                return false;
+        }
+        return true;
     }
-    public void EnableCheckerCollider()
+    private void EnableCheckerCollider()
     {
         checker.enabled = true;
     }
-    public void DisableCheckerCollider()
+    private void DisableCheckerCollider()
     {
         checker.enabled = false;
-        isSomething=false;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
-            isSomething=true;
             Debug.Log("something on the spawn");
         }
     }
