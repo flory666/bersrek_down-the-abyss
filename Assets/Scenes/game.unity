@@ -219,9 +219,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 351574219}
+    - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      propertyPath: maxTimer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6523851542272651090, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
@@ -297,8 +305,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5289762458985958614, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 294147743}
   m_SourcePrefab: {fileID: 100100000, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+--- !u!1 &294147742 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5289762458985958614, guid: 90cf961a68f839e44adccd9c2be077f6, type: 3}
+  m_PrefabInstance: {fileID: 294147741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &294147743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294147742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85719a1b02e5db747a4953e79fd0729b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &313429166
 GameObject:
   m_ObjectHideFlags: 0

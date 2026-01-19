@@ -1,4 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Dynamic;
+using System.Collections;
 
 public class enemyspawner : MonoBehaviour
 {
@@ -14,6 +18,8 @@ public class enemyspawner : MonoBehaviour
     private int spawnedEnemies = 0;
     public float spawnCooldown = 3f;
     private float spawnTimer = 3f;
+    [SerializeField]
+    private float maxTimer = 180f;
     private Transform farthest = null;
     private bool check = false;
     private int[][] enemyAlive = new int[1][];
@@ -27,6 +33,12 @@ public class enemyspawner : MonoBehaviour
         if (spawnTimer >= spawnCooldown && currentEnemies < maxAliveEnemies && spawnedEnemies < maxEnemies)
         {
             SpawnEnemy();
+        }
+        maxTimer -= Time.fixedDeltaTime;
+        if (maxTimer <= 0)
+        {
+            StartCoroutine(EndGameDelayed());
+            Time.timeScale -= 0.02f;
         }
     }
     private void SetTimer(float time)
@@ -81,11 +93,21 @@ public class enemyspawner : MonoBehaviour
     }
     private void OnEnemyKilled()
     {
-        Debug.Log("An enemy was killed. Decreasing current enemy count.");
         currentEnemies--;
     }
     private void OnPlayerDied()
     {
         isPlayerDead = true;
+        StartCoroutine(EndGameDelayed());
+    }
+    private IEnumerator EndGameDelayed()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        endGame();
+    }
+
+    private void endGame()
+    {
+        SceneManager.LoadScene("end");
     }
 }
