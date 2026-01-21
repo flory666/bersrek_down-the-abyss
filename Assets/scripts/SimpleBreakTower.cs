@@ -7,12 +7,13 @@ public class SimpleBreakTower : MonoBehaviour
     private Rigidbody[] cells;
     private bool broken = false;
     private BoxCollider bc;
+    public audioMaster audioMaster;
 
     private void Awake()
     {   
         bc = GetComponent<BoxCollider>();
         cells = GetComponentsInChildren<Rigidbody>();
-
+        audioMaster=GameObject.FindGameObjectWithTag("audio").GetComponent<audioMaster>();
         foreach (Rigidbody rb in cells)
         {
             rb.useGravity = false;
@@ -22,6 +23,7 @@ public class SimpleBreakTower : MonoBehaviour
 
     public void Break()
     {
+        audioMaster.playSound(audioMaster.bricks);
         if (broken) return;
         broken = true;
         

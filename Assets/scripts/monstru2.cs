@@ -25,8 +25,9 @@ public class monstru2 : MonoBehaviour
     public float gravity = -9.81f;
     public float groundedForce = -2f; // îl ține lipit de sol
     private Vector3 velocity;
+    public audioMaster audioMaster;
     [SerializeField]
-    private States state= States.targeting;
+    private States state = States.targeting;
     enum States
     {
         idle,
@@ -43,6 +44,7 @@ public class monstru2 : MonoBehaviour
         hitBox.SetActive(true);
         attackbox.SetActive(false);
         anim = GetComponent<Animator>();
+        audioMaster=GameObject.FindGameObjectWithTag("audio").GetComponent<audioMaster>();
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").transform;
         state = States.targeting;
@@ -134,7 +136,7 @@ public class monstru2 : MonoBehaviour
         attackbox.SetActive(false);
         anim.Play("monster2_stagger");
     }
-    
+
     void staggerEnd()
     {
         state = States.targeting;
@@ -143,10 +145,11 @@ public class monstru2 : MonoBehaviour
     {
         if (state == States.death)
             return;
+        audioMaster.playSound(audioMaster.monstru2);
         state = States.death;
         hitBox.SetActive(false);
         attackbox.SetActive(false);
-        controller.enabled=false;
+        controller.enabled = false;
         anim.Play("monster2_death");
         GameEvents.OnEnemyKilled?.Invoke();
         Destroy(gameObject, 10f);
@@ -163,7 +166,7 @@ public class monstru2 : MonoBehaviour
     }
     private void OnPlayerDied()
     {
-        if(state != States.death)
-        state = States.idle;
+        if (state != States.death)
+            state = States.idle;
     }
 }

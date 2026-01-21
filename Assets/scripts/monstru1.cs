@@ -20,6 +20,7 @@ public class monstru1 : MonoBehaviour, IDamageable
     public float gravity = -9.81f;
     public float groundedForce = -2f; // îl ține lipit de sol
     private Vector3 velocity;
+    public audioMaster audioMaster;
     private States state= States.chasing;
     enum States
     {
@@ -36,7 +37,7 @@ public class monstru1 : MonoBehaviour, IDamageable
         rightHand.SetActive(false);
         leftHand.SetActive(false);
         anim = GetComponent<Animator>();
-
+        audioMaster=GameObject.FindGameObjectWithTag("audio").GetComponent<audioMaster>();
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -140,6 +141,7 @@ public class monstru1 : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         if (state == States.death) return;
+        audioMaster.playSound(audioMaster.monstru1);
         health -= damage;
         anim.Play("monster1_stagger");
         if (health <= 0)

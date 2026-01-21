@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class endGame : MonoBehaviour
 {
@@ -9,22 +10,19 @@ public class endGame : MonoBehaviour
     private int kills;
     public Text timeText;
     public Text killsText;
+    [SerializeField] private Button ReturnButton;
 
     void Start()
+    {   Time.timeScale = 1f;
+        progres = GameObject.FindGameObjectWithTag("progres").GetComponent<Progres>();
+
+        int seconds = Mathf.FloorToInt(progres.time_survived);
+
+        timeText.text = "" + seconds + " s";
+        killsText.text = "" + progres.enemies_killed;
+    }
+    public void OnReturnButtonClicked()
     {
-        progres = FindAnyObjectByType<Progres>();
-
-        if (progres != null)
-        {
-            timeText.text = $"Time survived: {FormatTime(progres.time_survived)}";
-            killsText.text = $"Enemies killed: {progres.enemies_killed}";
-        }
-
-        string FormatTime(float seconds)
-        {
-            int min = Mathf.FloorToInt(seconds / 60f);
-            int sec = Mathf.FloorToInt(seconds % 60f);
-            return $"{min:00}:{sec:00}";
-        }
+        SceneManager.LoadScene("main menu");
     }
 }

@@ -25,4 +25,13 @@ public class Progres : MonoBehaviour
     {
         enemies_killed++;
     }
+    private void OnEnable()
+    {
+        GameEvents.OnEnemyKilled += OnEnemyKilled;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnEnemyKilled -= OnEnemyKilled;
+    }
 }

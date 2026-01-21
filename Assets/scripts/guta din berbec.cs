@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class gutadinberbec : MonoBehaviour, IDamageable
 {
@@ -25,6 +26,8 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     public float groundedForce = -2f; // îl ține lipit de sol
     private Vector3 velocity;
     private bool canTakeDamage = true;
+    public audioMaster audioMaster;
+    public Slider slider;
     private MovementState movementState = 0;
     enum MovementState
     {
@@ -50,6 +53,10 @@ public class gutadinberbec : MonoBehaviour, IDamageable
         Inputs.guts.block.canceled += ctx => block_canceled();
         Inputs.guts.armcannon.performed += ctx => armcannon();
         Inputs.guts.dodge.performed += ctx => dodge();
+        audioMaster=GameObject.FindGameObjectWithTag("audio").GetComponent<audioMaster>();
+        slider.maxValue = health;
+        slider.value = health;
+        slider.interactable = false;
     }
 
     private void Update()
@@ -158,6 +165,8 @@ public class gutadinberbec : MonoBehaviour, IDamageable
             currentAnimation = animationName;
         }
     }
+    private void playSteps()
+    {audioMaster.playSound(audioMaster.steps);}
     private void attack()
     {
         if (movementState == MovementState.attacking)
@@ -165,6 +174,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
             rememberAttack = true;
             return;
         }
+        audioMaster.playSound(audioMaster.sword);
         switch (++AttackCount)
         {
             case 1:
@@ -285,6 +295,7 @@ public class gutadinberbec : MonoBehaviour, IDamageable
     {
         if (!canTakeDamage) return;
         health -= damage;
+        slider.value -= damage;
         if (health <= 0)
         {
             Death();
