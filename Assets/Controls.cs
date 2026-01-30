@@ -154,6 +154,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""move_key"",
+                    ""type"": ""Button"",
+                    ""id"": ""55193610-e02d-4fa2-b14f-6b883e2d5b3c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""camera"",
+                    ""type"": ""Button"",
+                    ""id"": ""933d1d1c-0b47-499b-ab3f-5ddbd6978ef1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -233,6 +251,72 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7902f912-df3b-47fb-bedd-288acd1d2b67"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""move_key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84cecfd2-1bb1-49c3-a7d3-a9b278e39c35"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""move_key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39fa3242-5ba3-45cb-8570-6bb51e7cc604"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""move_key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""939944be-0623-4a3f-91f6-cc42a31313b7"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""move_key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c5133e8-ea9e-4669-8267-4518d1d9b2de"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e59dda7f-b64e-4267-9352-71ad6d95a9ee"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +332,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_guts_armcannon = m_guts.FindAction("armcannon", throwIfNotFound: true);
         m_guts_dodge = m_guts.FindAction("dodge", throwIfNotFound: true);
         m_guts_pause = m_guts.FindAction("pause", throwIfNotFound: true);
+        m_guts_move_key = m_guts.FindAction("move_key", throwIfNotFound: true);
+        m_guts_camera = m_guts.FindAction("camera", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -335,6 +421,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_guts_armcannon;
     private readonly InputAction m_guts_dodge;
     private readonly InputAction m_guts_pause;
+    private readonly InputAction m_guts_move_key;
+    private readonly InputAction m_guts_camera;
     /// <summary>
     /// Provides access to input actions defined in input action map "guts".
     /// </summary>
@@ -374,6 +462,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "guts/pause".
         /// </summary>
         public InputAction @pause => m_Wrapper.m_guts_pause;
+        /// <summary>
+        /// Provides access to the underlying input action "guts/move_key".
+        /// </summary>
+        public InputAction @move_key => m_Wrapper.m_guts_move_key;
+        /// <summary>
+        /// Provides access to the underlying input action "guts/camera".
+        /// </summary>
+        public InputAction @camera => m_Wrapper.m_guts_camera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -421,6 +517,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @pause.started += instance.OnPause;
             @pause.performed += instance.OnPause;
             @pause.canceled += instance.OnPause;
+            @move_key.started += instance.OnMove_key;
+            @move_key.performed += instance.OnMove_key;
+            @move_key.canceled += instance.OnMove_key;
+            @camera.started += instance.OnCamera;
+            @camera.performed += instance.OnCamera;
+            @camera.canceled += instance.OnCamera;
         }
 
         /// <summary>
@@ -453,6 +555,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @pause.started -= instance.OnPause;
             @pause.performed -= instance.OnPause;
             @pause.canceled -= instance.OnPause;
+            @move_key.started -= instance.OnMove_key;
+            @move_key.performed -= instance.OnMove_key;
+            @move_key.canceled -= instance.OnMove_key;
+            @camera.started -= instance.OnCamera;
+            @camera.performed -= instance.OnCamera;
+            @camera.canceled -= instance.OnCamera;
         }
 
         /// <summary>
@@ -542,5 +650,19 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "move_key" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove_key(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "camera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCamera(InputAction.CallbackContext context);
     }
 }

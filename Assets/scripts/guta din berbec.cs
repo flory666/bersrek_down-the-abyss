@@ -53,6 +53,8 @@ public class gutadinberbec : MonoBehaviour, IDamageable
         Inputs.guts.block.canceled += ctx => block_canceled();
         Inputs.guts.armcannon.performed += ctx => armcannon();
         Inputs.guts.dodge.performed += ctx => dodge();
+       Inputs.guts.move_key.performed += ctx => movementInput2(ctx);
+Inputs.guts.move_key.canceled  += ctx => movementInput2(ctx);
         audioMaster=GameObject.FindGameObjectWithTag("audio").GetComponent<audioMaster>();
         slider.maxValue = health;
         slider.value = health;
@@ -122,6 +124,25 @@ public class gutadinberbec : MonoBehaviour, IDamageable
             movementState = MovementState.idle;
         }
     }
+   private void movementInput2(Input.CallbackContext ctx)
+{
+    Vector2 moveInput = ctx.ReadValue<Vector2>().normalized;
+
+    move = Quaternion.Euler(0f, cam.eulerAngles.y, 0f) *
+           new Vector3(moveInput.x, 0, moveInput.y);
+
+    if (move != Vector3.zero && movable)
+    {
+        movementState = MovementState.running;
+        controls.Move(move * speed * Time.deltaTime);
+        anim.Play("run");
+        AttackCount = 0;
+    }
+    else
+    {
+        movementState = MovementState.idle;
+    }
+}
     private void actionMovement()
     {
         moveInput = Inputs.guts.move_character.ReadValue<Vector2>();
